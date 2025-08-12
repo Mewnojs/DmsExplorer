@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:DmsExplorer.ViewModels"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:ie="clr-namespace:Avalonia.Xaml.Interactions.Events;assembly=Avalonia.Xaml.Interactions.Events"
+             xmlns:locb="clr-namespace:DmsExplorer.Behaviors"
+             xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DmsExplorer.Views.MainView"
+             x:DataType="vm:MainViewModel">
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:MainViewModel />
+  </Design.DataContext>
+  <dialogHost:DialogHost CloseOnClickAway="False">
+    <dialogHost:DialogHost.DialogContent>
+      <!-- put your dialog content here-->
+      <dialogHost:DialogHost IsOpen="False" />
+    </dialogHost:DialogHost.DialogContent>
+    <!-- put the content over which the dialog is shown here (e.g. your main window grid)-->
+    <DockPanel>
+      <DockPanel Margin="5 5 5 5" DockPanel.Dock="Top">
+        <Button Command="{CompiledBinding OpenFileCommand}">Open...</Button>
+        <Button Command="{CompiledBinding SaveAsFileCommand}">Save as...</Button>
+        <TextBlock Margin="10 0 0 0" TextWrapping="Wrap" Text="{CompiledBinding FileNameDisplay}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Margin="0 0 0 0" TextWrapping="Wrap" IsVisible="{CompiledBinding FileDirty}" Text="*" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Margin="0 0 5 0" TextAlignment="Right" TextWrapping="Wrap" Text="{CompiledBinding VersionInfo}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+      </DockPanel>
+    
+      <Border BorderThickness="1" BorderBrush="Black">
+        <ScrollViewer Margin="5 0 5 5" HorizontalScrollBarVisibility="Hidden"
+                            VerticalScrollBarVisibility="Auto">
+          <TreeDataGrid Source="{CompiledBinding Source}" 
+                        locb:DoubleTappedBehav.Command="{CompiledBinding TreeDoubleTapExpand}"
+             locb:DoubleTappedBehav.CommandParameter="#Sender#EventArgs"
+                        >
+            <TreeDataGrid.ContextMenu>
+              <ContextMenu>
+                <MenuItem Header="Edit" IsEnabled="{CompiledBinding CanEditCommand}" Command="{CompiledBinding EditCommand}"/>
+                <MenuItem Header="Copy Text" Command="{CompiledBinding CopySelectedCommand}"/>
+                <MenuItem Header="Copy Raw" Command="{CompiledBinding CopySelectedRawCommand}"/>
+                <!--<MenuItem Header="Paste"/>-->
+              </ContextMenu>
+            </TreeDataGrid.ContextMenu>
+            <!--<i:Interaction.Behaviors>
+              <ia:EventTriggerBehavior EventName="DoubleTapped">
+                <ia:InvokeCommandAction Command="{CompiledBinding TreeDoubleTapExpand}"/>
+              </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>-->
+          </TreeDataGrid>
+        </ScrollViewer>
+      </Border>
+    </DockPanel>
+  </dialogHost:DialogHost>
+  
+</UserControl>

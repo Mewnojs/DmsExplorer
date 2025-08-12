@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:DmsExplorer.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="DmsExplorer.Views.EditDialog"
+        x:DataType="vm:EditDialogViewModel"
+        >
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:EditDialogViewModel />
+  </Design.DataContext>
+  <DockPanel>
+    <TextBlock Margin="0 0 0 5" Text="{CompiledBinding EditTitle}" DockPanel.Dock="Top"/>
+    <TextBox DockPanel.Dock="Top" MinWidth="200" AcceptsReturn="{CompiledBinding AcceptsReturn}" AcceptsTab="{CompiledBinding AcceptsTab}" Text="{CompiledBinding Text}"/>
+    <TextBlock IsVisible="{CompiledBinding ShowDigits}" Margin="0 5 0 5" Text="Digits: "/>
+    <TextBox IsVisible="{CompiledBinding ShowDigits}" DockPanel.Dock="Top" MinWidth="20" Text="{CompiledBinding Digits}"/>
+    <StackPanel Margin="0 5 0 0" DockPanel.Dock="Bottom" HorizontalAlignment="Right" Orientation="Horizontal">
+      <Button MinWidth="60" Command="{CompiledBinding EditCancel}" HorizontalContentAlignment="Center">Cancel</Button>
+      <Button MinWidth="60" Command="{CompiledBinding EditSave}" HorizontalContentAlignment="Center">Save</Button>
+    </StackPanel>
+  </DockPanel>
+</UserControl>
